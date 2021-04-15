@@ -23,7 +23,8 @@ class mainController extends Controller
     // $q=htmlspecialchars($input);
     $q = preg_replace('#(<[^>]+?[\x00-\x20"\'])(?:on|xmlns)[^>]*+>#iu', '$1>', $input);
     // echo($q);
-    if ($input != "") {
+    if ($input != "") 
+    {
         
         $searchParams = [
         'index' => 'etd',
@@ -83,8 +84,12 @@ class mainController extends Controller
     }
     return view('advancesearch');
      }
+     public function summary(Request $request)
+    {
 
-
+       return view('summary');
+     
+  }
 
    
 }

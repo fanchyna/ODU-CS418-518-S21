@@ -6,10 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravelista\Comments\Commenter;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, Commenter;
 
     /**
      * The attributes that are mass assignable.
@@ -40,4 +41,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function saved_dissertations() {
+        return $this->belongsToMany(Dissertation::class, "saved_dissertations");
+    }
 }

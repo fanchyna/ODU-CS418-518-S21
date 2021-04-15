@@ -16,7 +16,7 @@
         
          <style>
          html, body {
-                background-color: black;
+                background-color: grey;
                 color: white;
                 font-family: 'Raleway', sans-serif;
                 font-weight: 100;
@@ -35,9 +35,9 @@ font-family:sans-serif;
 h1
 {
 
-    color:white;
+    color:orange;
     margin-bottom: 200px;
-    margin-top:8px;
+    margin-top:2px;
     font-size: 50px;
     letter-spacing: 2px;
 
@@ -87,13 +87,12 @@ h1
             } */
             .form-box .search{
 
-   height:30px;
-   width:80%;
-   padding:15px 20px;
-   border: none;
-   border-radius:35px;
-   font-weight:bold;
-   outline:black;
+             height:30px;
+            width:80%;
+             padding:15px 20px;
+             border: none;
+            font-weight:bold;
+              outline:black;
 
 }
 
@@ -107,54 +106,13 @@ h1
    height: 56px;
    width: 14%;
    padding:15px 15px;
-   background: #ffeb3b;
+   background: orange;
    border: black;
-   color: #000;
-    position:relative; 
-   cursor:pointer;
-   border-radius: 25px;
-   text-align:center;
+   color: grey;
 
-}
 
-.search-btn:hover{
-   background: #ffc107;
-   cursor: pointer;
-}
 
-.form-box
-{
-position: absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-background:none;
-max-width:500px;
-width:65%;
-padding:10px;
-border-radius: 5px;
-display:flex;
-justify-content: space-between;
-}
 
-/* .speech {
-        border: 1px solid #DDD;
-        width:300px;
-        padding:0;
-        margin:0
-      }
-
-      .speech input {
-        border:0;
-        width:240px;
-        display:inline-block;
-        height:30px;
-        font-size: 14px;
-      }
-
-      .speech img {
-        float:right;
-        width:40px
       } */
 
          </style>
@@ -190,7 +148,9 @@ justify-content: space-between;
         {{ csrf_field() }}
       <h1> SEARCH ENGINE</h1>
 		  <div class="form-box">
+         
           <input type ="text" class="search" name="q" placeholder = "Search" id="transcript" />
+          <img onclick="startSearch()" src="//i.imgur.com/cHidSVu.gif" />
           <button class ="search-btn" type="submit"> Search</button><br>
 </div>
 </div>

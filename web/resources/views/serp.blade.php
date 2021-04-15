@@ -26,8 +26,8 @@ color: black;
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
 <div class="container">
 <a class="navbar-brand" href="{{ url('/') }}">
-Search Engine
-<!-- {{ config('app.name', 'Search Engine') }} -->
+Digital Library
+<!-- {{ config('app.name', 'Digital Library') }} -->
 </a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
 <span class="navbar-toggler-icon"></span>
@@ -40,10 +40,10 @@ Search Engine
 <!-- <ul class="navbar-nav ml-auto"> -->
 <ul class="navbar-nav ml-auto">
 <li class="nav-item">
-
+<a class="nav-link" href="{{ url('/save') }}">Saved Items</a>
 </li>
 <li class="nav-item">
-
+<a class="nav-link" href="{{ url('/searchist') }}">Search History</a>
 </li>
 @guest
 @if (Route::has('login'))
@@ -67,8 +67,6 @@ Search Engine
 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
 {{ Auth::user()->name }}
 </a>
-
-
 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 <!-- User Profile -->
 <!-- <a class="dropdown-item" href="{{ url('/profile') }}">Profile</a>
@@ -103,8 +101,8 @@ document.getElementById('logout-form').submit();">
 <form action="{{URL::to('/search')}}" method="POST" role="search">
 {{ csrf_field() }}
 <div class="form-box">
-<input type ="text" class="search" name="q" placeholder = "Search"> 
-
+<input type ="text" class="search" name="q" placeholder = "Search a book"> 
+<img onclick="startSearch()" src="//i.imgur.com/cHidSVu.gif" />
 <button class ="search-btn" type="submit"> Search</button>
 </form>
 <script type="text/javascript">
@@ -140,14 +138,14 @@ document.getElementById('logout-form').submit();">
 </div>
 <br>
 <br>
-<form action="{{URL::to('/advancesearch')}}" method="POST">
+<form action="{{URL::to('/advanced_search')}}" method="POST">
 {{ csrf_field() }}
 <div class="form-box">
-<button class ="search-btn" type="submit"> Advance Search</button>
+<button class ="search-btn" type="submit"> Advanced Search</button>
 </form>
 <br>
 <br>
-<form action="{{URL::to('/uploadfile')}}" method="GET">
+<form action="{{URL::to('/uploadfile')}}" method="POST">
 {{ csrf_field() }} 
 <button class ="search-btn" type="submit"> Add New Data</button>
 </form> 
@@ -162,8 +160,7 @@ require '/Applications/XAMPP/xamppfiles/htdocs/Sites/web/vendor/autoload.php';
 $client = Elasticsearch\ClientBuilder::create()
 //->setHosts($hosts)
 ->build();
-
-
+$hi = strip_tags($_POST['q']);
 $params = [
 'index' => 'etd',
 // "id" => "vXVDbXUB4eFHAaQOxlg-",
@@ -184,11 +181,12 @@ $q ?? '',
 ];
 // try{
 $response = $client->search($query);
-$score = $response['hits']['hits'];
+$score = $response['hits']['hits'][0]['_score'];
 $total = $response['hits']['total']['value'];
 echo"
 <div>
 <b><i><p style='font-size: 15px;'>Total results found: $total</p></b></i>
+<b><i><p style='font-size: 15px;'>Searched for: $hi </p></b></i>
 </div>"
 ;
 echo '
@@ -198,7 +196,9 @@ echo '
 <th>Author</th>
 <th>University</th>
 <th>Publisher</th>
-
+<th>Download</th>
+<th>Option</th>
+<th>like</th>
 </thead>
 <tbody>';
 foreach( $response['hits']['hits'] as $source){
@@ -219,7 +219,7 @@ $labs = (isset($source['_source']['description_abstract']) ? $source['_source'][
 // else {
 //   $lpdf1=$lpdf;
 // }
-    $path = "/Applications/XAMPP/xamppfiles/htdocs/Sites/dissertation/".$lhnum."/";
+$path = "/Applications/XAMPP/xamppfiles/htdocs/Sites/dissertation/".$lhnum."/";
     $dir =scandir($path);
 foreach($dir as $file){
     $fname=$path.$file;
@@ -235,18 +235,22 @@ echo "<tr>
 <td>".$lauthor."</td>
 <td>".$ldeg."</td>
 <td>".$lpublisher."</td>
+<td><a href= $name target='_blank' download>Download</a></td>";
+?>
 
-
-
+<td><form method = 'get' action ='/saved'>
+<input type='hidden' name='title' value='<? echo $title?>'/><button class='btn btn-primary'>Save</button>
+</form></td>
+<td><button class='btn btn-primary' id="demo" onclick="myFunction()">Like</button></td>
 
 <?php
-echo</tr>";
+echo"</tr>";
 
 }
 echo "</tbody></table>";
 
 
-$doc = $response['hits']['hits'];
+$doc = $response['hits']['hits'][0]['_source']['title'];
 ?>
 <script src="https://cdn.jsdelivr.net/mark.js/7.0.0/jquery.mark.min.js"></script>
 <script>
