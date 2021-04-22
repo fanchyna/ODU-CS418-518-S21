@@ -26,7 +26,6 @@ Route::get('/', function () {
 Auth::routes(['verify' =>true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::post('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 Route::get('/update', [App\Http\Controllers\mainController::class, 'update'])->name('update');
@@ -34,7 +33,7 @@ Route::get('/update', [App\Http\Controllers\mainController::class, 'update'])->n
 Route::post('/summary', [App\Http\Controllers\mainController::class, 'summary'])->name('summary');
 
 Route::get('/save', function () {
-    $users = DB::table('savedister')->select('id','title','author','degree_grantor', 'publisher','identifier_uri', 'description_abstract')->get();
+    $users = DB::table('saved_dissertations')->select('id','title','author','degree_grantor', 'publisher','identifier_uri', 'description_abstract')->get();
     return view('save', compact('users'));
 });
 
@@ -299,5 +298,3 @@ if(isset($_POST['uploadfile'])){
   header('location: search.php');
 
 }
-
-Auth::routes();

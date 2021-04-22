@@ -9,9 +9,8 @@ $sourceURL=Request('sourceURL');
 $description=Request('description');
 $publisher=Request('publisher');
 
-$mysqli = new mysqli("127.0.0.1", "admin", "monarchs", "amant");
-
-$link = mysqli_connect("127.0.0.1", "admin", "monarchs", "amant");
+$mysqli = new mysqli("127.0.0.1", "root", "","web1");
+$link = mysqli_connect("127.0.0.1", "root", "", "web1");
 
 $sql = "DELETE FROM save WHERE id=$id";
 if(mysqli_query($link, $sql)){

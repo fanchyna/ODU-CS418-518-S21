@@ -26,8 +26,8 @@ color: black;
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
 <div class="container">
 <a class="navbar-brand" href="{{ url('/') }}">
-Digital Library
-<!-- {{ config('app.name', 'Digital Library') }} -->
+Search Engine
+<!-- {{ config('app.name', 'Search Engine') }} -->
 </a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
 <span class="navbar-toggler-icon"></span>
@@ -43,7 +43,7 @@ Digital Library
 <a class="nav-link" href="{{ url('/save') }}">Saved Items</a>
 </li>
 <li class="nav-item">
-<a class="nav-link" href="{{ url('/searchist') }}">Search History</a>
+
 </li>
 @guest
 @if (Route::has('login'))
@@ -101,10 +101,10 @@ document.getElementById('logout-form').submit();">
 <form action="{{URL::to('/search')}}" method="POST" role="search">
 {{ csrf_field() }}
 <div class="form-box">
-<input type ="text" class="search" name="q" placeholder = "Search a book"> 
+<input type ="text" class="search" name="q" placeholder = "Search"> 
 <img onclick="startSearch()" src="//i.imgur.com/cHidSVu.gif" />
 <button class ="search-btn" type="submit"> Search</button>
-</form>
+
 <script type="text/javascript">
   function startSearch() {
 
@@ -132,16 +132,16 @@ document.getElementById('logout-form').submit();">
     }
   }
 </script>
-
+</form>
 
 </body>
 </div>
 <br>
 <br>
-<form action="{{URL::to('/advanced_search')}}" method="POST">
+<form action="{{URL::to('/advancesearch')}}" method="POST">
 {{ csrf_field() }}
 <div class="form-box">
-<button class ="search-btn" type="submit"> Advanced Search</button>
+<button class ="search-btn" type="submit"> Advance Search</button>
 </form>
 <br>
 <br>
@@ -198,7 +198,7 @@ echo '
 <th>Publisher</th>
 <th>Download</th>
 <th>Option</th>
-<th>like</th>
+<th>Summary</th>
 </thead>
 <tbody>';
 foreach( $response['hits']['hits'] as $source){
@@ -241,8 +241,10 @@ echo "<tr>
 <td><form method = 'get' action ='/saved'>
 <input type='hidden' name='title' value='<? echo $title?>'/><button class='btn btn-primary'>Save</button>
 </form></td>
-<td><button class='btn btn-primary' id="demo" onclick="myFunction()">Like</button></td>
-
+<td><form method = 'POST' action="{{URL::to('/summary')}}">
+{{ csrf_field() }}
+<input type='hidden' name='title' value='<? echo $title?>'/><button class='btn btn-primary'>Summary</button>
+</form></td>
 <?php
 echo"</tr>";
 

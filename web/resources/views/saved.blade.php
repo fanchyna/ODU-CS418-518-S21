@@ -6,12 +6,7 @@ Saved Items
 
 <?php
 
-// require '/Users/anuradhamantena/WP/vendor/autoload.php';
-// // require 'vendor/autoload.php';
-// // use Elasticsearch\ClientBuilder;
-// $client = Elasticsearch\ClientBuilder::create()
-// //->setHosts($hosts)
-// ->build();
+
 $url = $_SERVER['HTTP_REFERER'];
 $thisID= auth()->user()->id;
 $title=Request('title');
@@ -21,8 +16,8 @@ $publisher=Request('publisher');
 
 echo "$title";
 
-$mysqli = new mysqli("127.0.0.1", "admin", "monarchs", "amant");
-$link = mysqli_connect("127.0.0.1", "admin", "monarchs", "amant");
+$mysqli = new mysqli("127.0.0.1", "root", "","web1");
+$link = mysqli_connect("127.0.0.1", "root", "", "web1");
 
 $sql = "INSERT INTO save (user_id, title, url, description_abstract, publisher) VALUES ('$thisID','$title','$sourceURL','$description','$publisher')";
 if(mysqli_query($link, $sql)){
