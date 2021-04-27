@@ -73,13 +73,13 @@ Route::get('/claims',function()
 
 
 
-Route :: post('/advancesearch', function(){
+Route :: get('/advancesearch', function(){
   return view ('advancesearch');
 });
 
 Route::get('/save', function () 
 {
-    $users = DB::table('savedister')->select('id','title','author','degree_grantor', 'publisher','identifier_uri', 'description_abstract')->get();
+    $users = DB::table('saved_dissertations')->select('id','title','author','identifier_uri', 'description_abstract','publisher')->get();
     return view('save', compact('users'));
 });
 

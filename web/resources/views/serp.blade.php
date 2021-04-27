@@ -101,44 +101,51 @@ document.getElementById('logout-form').submit();">
 <form action="{{URL::to('/search')}}" method="POST" role="search">
 {{ csrf_field() }}
 <div class="form-box">
-<input type ="text" class="search" name="q" placeholder = "Search"> 
-<img onclick="startSearch()" src="//i.imgur.com/cHidSVu.gif" />
-<button class ="search-btn" type="submit"> Search</button>
+         
+         <input type ="text" class="search" name="q" placeholder = "Search" id="transcript" />
+         <img onclick="startSearch()" src="//i.imgur.com/cHidSVu.gif" />
+         <button class ="search-btn" type="submit"> Search</button><br>
+</div>
+</div>
 
+<!-- HTML5 Speech Recognition API -->
 <script type="text/javascript">
-  function startSearch() {
+ function startSearch() {
 
-    if (window.hasOwnProperty('webkitSpeechRecognition')) {
+   if (window.hasOwnProperty('webkitSpeechRecognition')) {
 
-      var recognition = new webkitSpeechRecognition();
+     var recognition = new webkitSpeechRecognition();
 
-      recognition.continuous = false;
-      recognition.interimResults = false;
+     recognition.continuous = false;
+     recognition.interimResults = false;
 
-      recognition.lang = "en-US";
-      recognition.start();
+     recognition.lang = "en-US";
+     recognition.start();
 
-      recognition.onresult = function(e) {
-        document.getElementById('transcript').value
-                                 = e.results[0][0].transcript;
-        recognition.stop();
-        document.getElementById('q').submit();
-      };
+     recognition.onresult = function(e) {
+       document.getElementById('transcript').value
+                                = e.results[0][0].transcript;
+       recognition.stop();
+       document.getElementById('q').submit();
+     };
 
-      recognition.onerror = function(e) {
-        recognition.stop();
-      }
+     recognition.onerror = function(e) {
+       recognition.stop();
+     }
 
-    }
-  }
+   }
+ }
 </script>
+
+
+
 </form>
 
 </body>
 </div>
 <br>
 <br>
-<form action="{{URL::to('/advancesearch')}}" method="POST">
+<form action="{{URL::to('/advancesearch')}}" method="GET">
 {{ csrf_field() }}
 <div class="form-box">
 <button class ="search-btn" type="submit"> Advance Search</button>
@@ -160,7 +167,7 @@ require '/Applications/XAMPP/xamppfiles/htdocs/Sites/web/vendor/autoload.php';
 $client = Elasticsearch\ClientBuilder::create()
 //->setHosts($hosts)
 ->build();
-$hi = strip_tags($_POST['q']);
+
 $params = [
 'index' => 'etd',
 // "id" => "vXVDbXUB4eFHAaQOxlg-",
@@ -186,7 +193,7 @@ $total = $response['hits']['total']['value'];
 echo"
 <div>
 <b><i><p style='font-size: 15px;'>Total results found: $total</p></b></i>
-<b><i><p style='font-size: 15px;'>Searched for: $hi </p></b></i>
+
 </div>"
 ;
 echo '
@@ -212,21 +219,24 @@ $lhnum = (isset($source['_source']['handle']) ? $source['_source']['handle'] : "
 $lpdf = (isset($source['_source']['relation_haspart']) ? $source['_source']['relation_haspart'] : ""); 
 $labs = (isset($source['_source']['description_abstract']) ? $source['_source']['description_abstract'] : ""); 
 
+
+
+
 // if (is_array($lpdf)) 
 // {
-//     $lpdf1 = $lpdf[0];
+// $lpdf1 = $lpdf[0];
 // }
 // else {
-//   $lpdf1=$lpdf;
+// $lpdf1=$lpdf;
 // }
 $path = "/Applications/XAMPP/xamppfiles/htdocs/Sites/dissertation/".$lhnum."/";
-    $dir =scandir($path);
+ $dir =scandir($path);
 foreach($dir as $file){
-    $fname=$path.$file;
+ $fname=$path.$file;
 }
 if(mime_content_type($fname)=='application/pdf')
 {
-    $name="/dissertation/".$lhnum."/".$file;
+ $name="/dissertation/".$lhnum."/".$file;
 }
 
 
@@ -250,6 +260,8 @@ echo"</tr>";
 
 }
 echo "</tbody></table>";
+
+
 
 
 $doc = $response['hits']['hits'][0]['_source']['title'];
@@ -287,18 +299,18 @@ error: function() {
 });
 });
 $('.like').on('click', function(){ 
-  $.ajax({ 
-    type: "GET", 
-    url: 'wwww.example.com/articles/slug', 
-    data: {slug: 'the slug'}, 
-    success: function(store){ 
-    }, 
-  }); 
+ $.ajax({ 
+ type: "GET", 
+ url: 'wwww.example.com/articles/slug', 
+ data: {slug: 'the slug'}, 
+ success: function(store){ 
+ }, 
+ }); 
 }) 
 
 function myFunction() {
-    document.getElementById("demo").style.color = "Red";
-    // document.getElementById("demo").style.text = "liked";
+ document.getElementById("demo").style.color = "Red";
+ // document.getElementById("demo").style.text = "liked";
 }
 </script>
 
